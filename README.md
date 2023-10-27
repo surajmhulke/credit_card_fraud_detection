@@ -32,8 +32,8 @@ from matplotlib import gridspec
 Code : Loading the Data
 
 # Load the dataset from the csv file using pandas 
-# best way is to mount the drive on colab and  
-# copy the path for the csv file 
+
+best way is to mount the drive on colab and  copy the path for the csv file 
 data = pd.read_csv("credit.csv") 
 Code : Understanding the Data
 
@@ -43,7 +43,7 @@ data.head()
 Code : Describing the Data
 
 # Print the shape of the data 
-# data = data.sample(frac = 0.1, random_state = 48) 
+data = data.sample(frac = 0.1, random_state = 48) 
 print(data.shape) 
 print(data.describe()) 
 Output :
@@ -158,8 +158,7 @@ yPred = rfc.predict(xTest)
 Code : Building all kinds of evaluating parameters
 
 # Evaluating the classifier 
-# printing every score of the classifier 
-# scoring in anything 
+printing every score of the classifier scoring in anything 
 from sklearn.metrics import classification_report, accuracy_score  
 from sklearn.metrics import precision_score, recall_score 
 from sklearn.metrics import f1_score, matthews_corrcoef 
