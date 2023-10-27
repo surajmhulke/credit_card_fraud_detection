@@ -119,15 +119,81 @@ sns.heatmap(corrmat, vmax = .8, square = True)
 plt.show() 
 
 In the HeatMap we can clearly see that most of the features do not correlate to other features but there are some features that either has a positive or a negative correlation with each other. For example, V2 and V5 are highly negatively correlated with the feature called Amount. We also see some correlation with V20 and Amount. This gives us a deeper understanding of the Data available to us.
+# cheking for null values 
+
+ data.isnull().sum()
+ 
+Time      0
+V1        0
+V2        0
+V3        0
+V4        0
+V5        0
+V6        0
+V7        0
+V8        0
+V9        0
+V10       0
+V11       0
+V12       0
+V13       0
+V14       0
+V15       0
+V16       0
+V17       0
+V18       1
+V19       1
+V20       1
+V21       1
+V22       1
+V23       1
+V24       1
+V25       1
+V26       1
+V27       1
+V28       1
+Amount    1
+Class     1
+dtype: int64
+[46]
+0s
+
+due to this we will get 
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+<ipython-input-64-88c74b1a8e3b> in <cell line: 5>()
+      3 # random forest model creation
+      4 rfc = RandomForestClassifier()
+----> 5 rfc.fit(xTrain, yTrain)
+      6 # predictions
+      7 yPred = rfc.predict(xTest)
+
+4 frames
+/usr/local/lib/python3.10/dist-packages/sklearn/utils/validation.py in _assert_all_finite(X, allow_nan, msg_dtype, estimator_name, input_name)
+    159                 "#estimators-that-handle-nan-values"
+    160             )
+--> 161         raise ValueError(msg_err)
+    162 
+    163 
+
+ValueError: Input X contains NaN.
+RandomForestClassifier does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values
+
+
 
 Code : Separating the X and the Y values
 Dividing the data into inputs parameters and outputs value format
 
 # dividing the X and the Y from the dataset 
 X = data.drop(['Class'], axis = 1) 
-Y = data["Class"] 
+"""
+## very Important point we have kept one na value of the target as fraud as sklearn.ensemble.HistGradientBoostingClassifier also throws error when we applied it as y is null...
+Y = data["Class"].fillna(1) 
+
 print(X.shape) 
 print(Y.shape) 
+
 # getting just the values for the sake of processing  
 # (its a numpy array with no columns) 
 xData = X.values 
@@ -156,6 +222,31 @@ rfc.fit(xTrain, yTrain)
 # predictions 
 yPred = rfc.predict(xTest) 
 Code : Building all kinds of evaluating parameters
+"""
+keynote: at first I havent removed the null values so i got below erro,
+ValueError: Input X contains NaN.
+RandomForestClassifier does not accept missing values encoded as NaN natively.
+ For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier 
+ and Regressor which accept missing values encoded as NaNs natively. 
+ Alternatively, it is possible to preprocess the data, for instance by using an imputer
+  transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html 
+  You can find a list of all estimators that handle NaN values at the following 
+  page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values
+"""
+## very Important point we have kpts one na value of the target as fraud as sklearn.ensemble.HistGradientBoostingClassifier also throws error when we applied it as y is null...
+
+# SO I used sklearn.ensemble.HistGradientBoostingClassifier 
+
+
+# Building the Random Forest Classifier (RANDOM FOREST) 
+from sklearn.ensemble import HistGradientBoostingClassifier 
+# random forest model creation 
+ 
+rfc = HistGradientBoostingClassifier()
+ 
+rfc.fit(xTrain, yTrain) 
+# predictions 
+yPred = rfc.predict(xTest) 
 
 # Evaluating the classifier 
 printing every score of the classifier scoring in anything 
@@ -202,15 +293,7 @@ plt.title("Confusion matrix")
 plt.ylabel('True class') 
 plt.xlabel('Predicted class') 
 plt.show() 
-![image](https://github.com/surajmhulke/credit_card_fraud_detection/assets/136318267/3cd2de5e-5bc9-47ec-bfef-30c5b0c18bb6)
+![image](https://github.com/surajmhulke/credit_card_fraud_detection/assets/136318267/d538b302-4038-471d-b8f0-a0daf7399a9f)
 
  
- ![image](https://github.com/surajmhulke/credit_card_fraud_detection/assets/136318267/15be4b34-1214-49af-a2ac-e33a40052664)
-
-
-
-Comparison with other algorithms without dealing with the imbalancing of the data.
-
-
-As you can see with our Random Forest Model we are getting a better result even for the recall which is the most tricky part.
 
