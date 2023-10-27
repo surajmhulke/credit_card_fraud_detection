@@ -203,6 +203,9 @@ plt.title("Confusion matrix")
 plt.ylabel('True class') 
 plt.xlabel('Predicted class') 
 plt.show() 
+![image](https://github.com/surajmhulke/credit_card_fraud_detection/assets/136318267/3cd2de5e-5bc9-47ec-bfef-30c5b0c18bb6)
+
+ 
  ![image](https://github.com/surajmhulke/credit_card_fraud_detection/assets/136318267/15be4b34-1214-49af-a2ac-e33a40052664)
 
 
